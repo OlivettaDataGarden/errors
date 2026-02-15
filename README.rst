@@ -20,7 +20,7 @@ Managing error codes throughout you project
       - |codecov|
     * - package
       - |version| |commits-since|
-  
+
 .. |docs| image:: https://readthedocs.org/projects/errors/badge/?style=flat
     :target: https://errors.readthedocs.io/
     :alt: Documentation Status
@@ -44,7 +44,7 @@ Managing error codes throughout you project
 
 error-manager main use cases
 ----------------------------
-Main use case for the error-manager package is to implement a ``ListErrors`` class that can be used throughout 
+Main use case for the error-manager package is to implement a ``ListErrors`` class that can be used throughout
 your project to define and access immutable standard error codes and descriptions ::
 
     # retrieve customer defined ErrorCode object form ``ListErrors`` class
@@ -54,23 +54,23 @@ your project to define and access immutable standard error codes and description
         code='ER_API404_00001',
         description='API get request returned 404',
         error_data={})
-    
+
     # add custom error data to error message when you want to persist or log the error
-    # As the errorcode are immutable the add_error_data returns a new error (immutable) error code. 
+    # As the errorcode are immutable the add_error_data returns a new error (immutable) error code.
     >>> from errors.base import add_error_data
     >>> error_without_data = ListErrors.API_GET_RETURNED_404
     >>> error_with_data = add_error_data(error_without_data, {'url': 'www.bad_url.com'})
-    >>> error_with_data 
+    >>> error_with_data
     ErrorCode(
         code='ER_API404_00001',
         description='API get request returned 404',
         error_data={'url': 'www.bad_url.com'})
-    
+
 This ErrorCode could be returned by the method performing the request so that
 the logic calling this method is aware of the failing request.
 
 In order to use a single type as return value the error-manager package introduces a `ReturnValue` class
-that can hold the actual response, any possible downstream errors and the status of the return value. See 
+that can hold the actual response, any possible downstream errors and the status of the return value. See
 ReturnValue documentation.
 
 

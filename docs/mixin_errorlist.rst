@@ -21,7 +21,5 @@ to mixin all definitions of your errorcodes in a central custom class with the
     from your_local_module2 import ModTwoErrorcodes
 
     class MyProjectErrorCodes(ErrorListByMixin, ModOneErrorcodes, ModTwoErrorcodes): ...
-    
-    MyProjectErrorCodes.ERROR_FROM_MOD_ONE    # this now does not create type checking issues 
 
-
+    MyProjectErrorCodes.ERROR_FROM_MOD_ONE    # this now does not create type checking issues

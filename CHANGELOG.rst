@@ -20,7 +20,7 @@ Changelog
 
 1.3.0 (2022-11-01)
 ------------------
-* Added type annotations 
+* Added type annotations
 
 1.2.4 (2022-10-26)
 ------------------
@@ -54,7 +54,7 @@ Changelog
 1.0.0 (2021-10-12)
 ------------------
 * Added Documentation and removed more default but redundant Documentation
-* Added reference documentation for ``ListErrors`` and ``base`` module   
+* Added reference documentation for ``ListErrors`` and ``base`` module
 
 0.9.0 (2021-10-11)
 ------------------

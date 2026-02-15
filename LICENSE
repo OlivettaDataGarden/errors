@@ -3,7 +3,7 @@ errors - Module to manage error code, descriptions and data in a unified way thr
 Copyright (c) 2021, Maarten de Ruyter.
 
 This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Lesser General Public License 
+it under the terms of the GNU Lesser General Public License
 as published by the Free Software Foundation, either version 3
 of the License, or (at your option) any later version.
 

@@ -1,7 +1,8 @@
 """This module provides an alterantive way to regster custom errors via a mixin class.
 
-When using the register method on the ListErrors class you will face issues with static type
-checkers. Static type checker and autocompletion will not evaluate all registrations of
+When using the register method on the ListErrors class you will face
+issues with static type checkers. Static type checker and autocompletion
+will not evaluate all registrations of
 error codes as these are done only in run time.
 
 The class ErrorListByMixin provide an alteranative way to create a single class with all
@@ -15,7 +16,7 @@ ErrorListByMixin class.
 >>>
 >>> class MyProjectErrorCodes(ErrorListByMixin, ModOneErrorcodes, ModTwoErrorcodes): ...
 >>>
->>> MyProjectErrorCodes.ERROR_FROM_MOD_ONE    # this now does not create type checking issues
+>>> MyProjectErrorCodes.ERROR_FROM_MOD_ONE  # no type checking issues
 
 """
 

@@ -12,7 +12,8 @@ An ErrorCode instance contains the following attributes
 - code (str) : the error code. Advice to make this code self
                explanatory using a naming convention
 - description (str) : the error description
-- error_data (dict) : Optional dict to provide more details for a specific instance of the error
+- error_data (dict) : Optional dict to provide more details for a
+                      specific instance of the error
 
 method is_error
 ---------------
