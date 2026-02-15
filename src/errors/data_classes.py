@@ -1,4 +1,4 @@
-"""_summary_"""
+"""Dataclasses for returning results with validity status and error information."""
 
 from dataclasses import dataclass, field
 from typing import Generic, Optional, TypeVar
@@ -12,10 +12,12 @@ T = TypeVar("T")
 
 @dataclass
 class ReturnValueWithStatus(Generic[T]):
-    """
-    Dataclass to define an object for returning results including status and
-    errors from error class.
+    """Generic dataclass for returning a result with validity status and errors.
 
+    Attributes:
+        result: The return value (any type T), defaults to None.
+        is_valid: Whether the result is valid (read-only property).
+        errors: List of accumulated ErrorCode instances (read-only property).
     """
 
     result: Optional[T] = None
@@ -24,20 +26,21 @@ class ReturnValueWithStatus(Generic[T]):
 
     @property
     def errors(self) -> list[ErrorCode]:
+        """Return the list of accumulated errors."""
         return self._errors
 
     @property
     def is_valid(self) -> bool:
+        """Return whether this return value is still valid."""
         return self._is_valid
 
     def add_error(self, error: ErrorCode, keep_current_status: bool = False) -> None:
-        """Add and error to the return value instance.
+        """Add an error to this return value instance.
 
         Args:
-            error (ErrorCode): Error to be added
-            keep_current_status (bool, optional):
-                Will keep the is_valid status inchanged if set to True.
-                Defaults to False.
+            error: The ErrorCode to append.
+            keep_current_status: When True, ``is_valid`` is left unchanged.
+                When False (default), ``is_valid`` is set to False.
         """
         self._errors.append(error)
 
@@ -46,13 +49,15 @@ class ReturnValueWithStatus(Generic[T]):
 
 
 class ReturnValueWithErrorStatus(ReturnValueWithStatus[T]):
-    """Class to easuly define a ReturnValue with an errorcode.
+    """Factory for creating a ReturnValueWithStatus pre-populated with an error.
 
-    Should be used like:
-    ReturnValueWithErrorStatus(error=predefined_error_code)
+    Returns a ``ReturnValueWithStatus`` instance with the given error already
+    added and ``is_valid`` set to False.
 
-    returns an instance of ReturnValueWithStatus with predefined_error_code
-    added to the error list.
+    Example::
+
+        result = ReturnValueWithErrorStatus(error=MY_ERROR_CODE)
+        assert not result.is_valid
     """
 
     def __new__(cls, error: ErrorCode):

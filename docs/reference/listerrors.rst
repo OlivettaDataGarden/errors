@@ -1,4 +1,4 @@
-ListErrors 
+ListErrors
 ==========
 
 .. autoclass:: errors.error.ListErrors

@@ -1,4 +1,4 @@
-"""Module to define ListErrors class."""
+"""Module defining the ListErrors singleton registry for global error lookup."""
 
 from typing import Dict, Type
 
@@ -6,16 +6,30 @@ from errors.base import ErrorCode, ErrorsClassErrors, FunctionalErrorsBaseClass
 
 
 class ListErrors:
-    """Singleton Class for registering and retrieving error codes"""
+    """Singleton registry for registering and retrieving error codes.
+
+    Error enumerators register themselves here on import, enabling
+    global ``error_description()`` and ``error_object()`` lookups by
+    code string.
+    """
 
     _errors: Dict[str, str] = {}
 
     def __new__(cls):
+        """Return the class itself, enforcing singleton behaviour."""
         return cls
 
     @classmethod
     def register_error(cls, error_key: str, error: ErrorCode) -> None:
-        """Class method to register a single error key with error code."""
+        """Register a single error, storing it as a class attribute.
+
+        Args:
+            error_key: Attribute name under which the error is stored.
+            error: The ErrorCode instance to register.
+
+        Raises:
+            ValueError: If *error* is not an ErrorCode instance.
+        """
         if not isinstance(error, ErrorCode):
             raise ValueError("provided error is not of type ErrorCode")
         cls._errors.update({error.code: error.description})
@@ -23,11 +37,14 @@ class ListErrors:
 
     @classmethod
     def register_errors(cls, errors: Type[FunctionalErrorsBaseClass]) -> None:
-        """Register list of errors defined in a FunctionalErrorsBaseClass
+        """Register all errors from a FunctionalErrorsBaseClass enumerator.
 
-        :param errors: The class containg the errors (not an instance of that class)
-        :type errors: Type[FunctionalErrorsBaseClass]
-        :raises ValueError: raises ValueError when
+        Args:
+            errors: The enumerator class (not an instance) whose members
+                will be registered.
+
+        Raises:
+            ValueError: If *errors* is not a FunctionalErrorsBaseClass subclass.
         """
         if not issubclass(errors, FunctionalErrorsBaseClass):
             raise ValueError("provide errors are not of type FunctionalErrorsBaseClass")
@@ -37,7 +54,17 @@ class ListErrors:
 
     @classmethod
     def error_description(cls, error_code: str) -> str:
-        """Transforms error code in error description."""
+        """Look up the description for a registered error code string.
+
+        Args:
+            error_code: The error code string to look up.
+
+        Returns:
+            The error description.
+
+        Raises:
+            KeyError: If *error_code* is not registered.
+        """
         error = cls._errors.get(error_code)
         if not error:
             raise KeyError(
@@ -47,7 +74,14 @@ class ListErrors:
 
     @staticmethod
     def error_object(error_code: ErrorCode) -> dict:
-        """Transforms error code into dict."""
+        """Convert an ErrorCode to a dict with 'error' and 'description' keys.
+
+        Args:
+            error_code: The ErrorCode instance to convert.
+
+        Returns:
+            Dict with 'error' (code string) and 'description' keys.
+        """
         return {"error": error_code.code, "description": error_code.description}
 
 

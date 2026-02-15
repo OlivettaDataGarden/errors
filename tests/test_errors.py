@@ -1,4 +1,4 @@
-"""Module to provide test methods for errors.error module."""
+"""Tests for the ListErrors singleton registry in errors.error."""
 
 import pytest
 
@@ -7,68 +7,61 @@ from errors.error import ListErrors
 
 
 def test_list_errors_class_exists():
-    """Ensure ErrorsClassErrors class exists."""
+    """Ensure ListErrors class exists."""
     assert ListErrors  # type: ignore
 
 
 def test_list_error_is_singleton_class():
-    """Ensure ErrorsClassErrors class is a singleton class."""
+    """Ensure ListErrors is a singleton (instantiation returns the class itself)."""
     list_errors = ListErrors()
     assert list_errors is ListErrors
 
 
 def test_register_invalid_error_instance_error():
-    """Test registering an invalid error raises exception."""
+    """Ensure register_error raises ValueError for a non-ErrorCode instance."""
     with pytest.raises(ValueError):
         ListErrors.register_error(error_key="TEST", error="invalid_error_instance")  # type: ignore
 
 
 def test_register_valid_error_instance_error():
-    """Test registering an valid error is possible."""
+    """Ensure register_error stores the error as a class attribute."""
     error = ErrorCode(code="TEST", description="desc")
     ListErrors.register_error(error_key="TEST", error=error)
     assert ListErrors.TEST == error  # type: ignore
 
 
 def test_register_invalid_error_class_list_error():
-    """Test registering an invalid error enumerator raises exception."""
+    """Ensure register_errors raises ValueError for a non-FunctionalErrorsBaseClass."""
     invalid_enumerator_class = BaseEnumerator
     with pytest.raises(ValueError):
         ListErrors.register_errors(errors=invalid_enumerator_class)  # type: ignore
 
 
 def test_error_description_for_undefined_error_code_raises_exception():
-    """Error_description for undefined error code raises exception."""
+    """Ensure error_description raises KeyError for an unregistered code."""
     non_existing_error_code = "non existing"
     with pytest.raises(KeyError):
         ListErrors.error_description(error_code=non_existing_error_code)
 
 
 def test_error_description_retrieved_for_existing_error_code():
-    """Retrieving error_description returns the correct description."""
+    """Ensure error_description returns the correct description."""
     description = ListErrors.error_description(error_code="ER_GETERROR_00001")
     assert ErrorsClassErrors.COULD_NOT_FIND_ERROR_CODE.value.description == description
 
 
 def test_is_error_returns_false():
-    """
-    Test is_error method returns False if error is not an instance off
-    ErrorCode or subclass of ErrorCode.
-    """
+    """Ensure is_error returns False for a non-ErrorCode object."""
     assert not is_error("1")
 
 
 def test_is_error_returns_true():
-    """
-    Test is_error method returns True if error is an instance of ErrorCode.
-    """
+    """Ensure is_error returns True for an ErrorCode instance."""
     assert is_error(ErrorCode("code", "description"))
 
 
 def test_is_error_returns_true_on_error_code_sub_class():
-    """
-    Test is_error method returns True if error is an instance of ErrorCode.
-    """
+    """Ensure is_error returns True for a subclass of ErrorCode."""
 
     class ErrorCodeSubClass(ErrorCode):
         pass
