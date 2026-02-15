@@ -1,4 +1,4 @@
-"""Module to provide test methods for errors.mixin module."""
+"""Tests for the ErrorListByMixin class in errors.mixin."""
 
 import pytest
 

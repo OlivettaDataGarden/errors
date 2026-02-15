@@ -1,6 +1,4 @@
-"""
-Module to provide test methods for ReturnValue dataclass of the errors module.
-"""
+"""Tests for ReturnValueWithStatus and ReturnValueWithErrorStatus dataclasses."""
 
 import pytest
 
@@ -9,7 +7,7 @@ from errors.data_classes import ReturnValueWithErrorStatus, ReturnValueWithStatu
 
 
 def test_return_value_with_status_class_exists():
-    """Ensure from ReturnValueWithStatus class exists."""
+    """Ensure ReturnValueWithStatus class exists."""
     assert ReturnValueWithStatus  # type: ignore
 
 
@@ -19,27 +17,27 @@ def test_return_value_with_error_status_class_exists():
 
 
 def test_return_value_with_status_has_result_attribute():
-    """Ensure ErrorsClassErrors instance has result attribute."""
+    """Ensure ReturnValueWithStatus instance has a result attribute."""
     assert hasattr(ReturnValueWithStatus(), "result")
 
 
 def test_return_value_with_status_has_is_valid_attribute():
-    """Ensure ErrorsClassErrors instance has _is_valid attribute."""
+    """Ensure ReturnValueWithStatus instance has an _is_valid attribute."""
     assert hasattr(ReturnValueWithStatus(), "_is_valid")
 
 
 def test_return_value_with_status_has_errors_attribute():
-    """Ensure ErrorsClassErrors instance has errors attribute."""
+    """Ensure ReturnValueWithStatus instance has an errors attribute."""
     assert hasattr(ReturnValueWithStatus(), "errors")
 
 
 def test_is_valid_attribute_is_true_if_there_are_no_errors():
-    """Ensure is_valid property is true if there are no errors."""
+    """Ensure is_valid is True by default when no errors are added."""
     assert ReturnValueWithStatus().is_valid is True
 
 
 def test_adding_errors_to_return_value():
-    """test that errors can be added to a returnvalue object."""
+    """Ensure add_error appends the error to the errors list."""
     error = ErrorCode(code="TEST", description="desc")
     return_value = ReturnValueWithStatus[str]()
     return_value.add_error(error)
@@ -47,7 +45,7 @@ def test_adding_errors_to_return_value():
 
 
 def test_return_value_with_errors_is_invalid_by_default():
-    """test a return value object with errors is by default invalid."""
+    """Ensure add_error sets is_valid to False by default."""
     error = ErrorCode(code="TEST", description="desc")
     return_value = ReturnValueWithStatus[str]()
     return_value.add_error(error)
@@ -55,7 +53,7 @@ def test_return_value_with_errors_is_invalid_by_default():
 
 
 def test_return_value_can_remain_valid_when_adding_an_error():
-    """test adding an error whilst keeping the status valid."""
+    """Ensure add_error with keep_current_status=True preserves is_valid."""
     error = ErrorCode(code="TEST", description="desc")
     return_value = ReturnValueWithStatus[str]()
     return_value.add_error(error, keep_current_status=True)
@@ -63,11 +61,7 @@ def test_return_value_can_remain_valid_when_adding_an_error():
 
 
 def test_return_value_remains_invalid_with_keep_current_status_set_to_true():
-    """
-    test adding an that when adding and error with keep_current_status set to
-    true to a return value with status invalid doesn't change the status. I.e.
-    status remains invalid.
-    """
+    """Ensure keep_current_status=True does not flip is_valid back to True."""
     error1 = ErrorCode(code="TEST1", description="desc")
     error2 = ErrorCode(code="TEST2", description="desc")
     return_value = ReturnValueWithStatus[str]()
@@ -79,10 +73,7 @@ def test_return_value_remains_invalid_with_keep_current_status_set_to_true():
 
 
 def test_return_value_with_error_status_returns_error_value():
-    """
-    Test that ReturnValueWithErrorStatus returns a ReturnValueWithErrorStatus
-    instance with an error and status invalid.
-    """
+    """Ensure ReturnValueWithErrorStatus creates an invalid instance with the error."""
     error = ErrorCode(code="TEST1", description="desc")
     return_value = ReturnValueWithErrorStatus[str](error)
     assert isinstance(return_value, ReturnValueWithStatus)
@@ -91,10 +82,7 @@ def test_return_value_with_error_status_returns_error_value():
 
 
 def test_return_value_with_error_status_raises_type_error():
-    """
-    Test that ReturnValueWithErrorStatus returns a TypeError when
-    the provided error is not of type ErrorCode.
-    """
+    """Ensure ReturnValueWithErrorStatus raises TypeError for non-ErrorCode input."""
     error = "not an ErrorCode instance"
     with pytest.raises(TypeError):
         ReturnValueWithErrorStatus[str](error)  # type: ignore

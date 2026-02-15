@@ -1,4 +1,8 @@
-"""init file errors module."""
+"""Error-manager: manage error codes, descriptions and data in a unified way.
+
+This package provides ErrorCode, error registries (ListErrors, ErrorListByMixin),
+and ReturnValueWithStatus for propagating results with error information.
+"""
 
 __version__ = "1.4.4"
 
