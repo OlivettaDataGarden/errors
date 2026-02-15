@@ -42,7 +42,6 @@ class ErrorListByMixin:
 
     @classmethod
     def _regenerate_errors_list(cls) -> None:
-        print("regenerate")
         for item in dir(cls):
             atribute = getattr(cls, item)
             typ = type(atribute)
