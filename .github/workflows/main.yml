@@ -92,6 +92,7 @@ jobs:
       - test
       - build_source_dist
     runs-on: ubuntu-latest
+    environment: pypi_releasing
     permissions:
       id-token: write
     steps:
