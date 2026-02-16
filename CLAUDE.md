@@ -20,7 +20,7 @@ just test                    # Run tests via justfile (uv sync + uv run pytest)
 uv run pytest                # Run tests directly
 uv run pytest tests/test_errors.py  # Run a single test file
 uv run pytest -k "test_name"        # Run a specific test
-uv run tox                   # Run all tox environments (py310, py311, py312)
+uv run tox                   # Run all tox environments (py310-py314)
 uv run tox -e py312          # Run tests on specific Python version
 just tox                     # Run tox via justfile
 ```
@@ -61,6 +61,16 @@ Error enumerators subclass `FunctionalErrorsBaseClass`, define members as `Error
 ## Git Conventions
 
 - Branch naming: `DGEM-<story nr>-<short-description>` (e.g. `DGEM-1-new-package-setup-with-claude-and-uv`)
+
+## CI/CD
+
+GitHub Actions workflow (`.github/workflows/main.yml`) runs on every push:
+- **Format** — `ruff format --check` (direct, no tox)
+- **Lint** — `ruff check` (direct, no tox)
+- **Type check** — `tox -e typecheck` (mypy)
+- **Test** — tox matrix for Python 3.12, 3.13, 3.14
+- **Build** — source distribution + wheel
+- **Publish** — PyPI via Trusted Publishing (on version tags `v*`), environment: `pypi_releasing`
 
 ## Code Style
 
